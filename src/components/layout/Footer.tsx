@@ -8,7 +8,7 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="shrink-0">
             <Link to="/" className="flex items-center justify-center md:justify-start group">
-              <img src="https://iloveqrco.de/logo.png" alt="I Love QR Code" className="h-14 w-auto group-hover:scale-110 transition-transform" />
+              <img src="/logo.png" alt="I Love QR Code" className="h-14 w-auto group-hover:scale-110 transition-transform" />
             </Link>
           </div>
           <div className="max-w-md text-center md:text-right">
