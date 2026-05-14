@@ -22,21 +22,40 @@ export const GeneratorPage = () => {
   const [type, setType] = useState<QRType>('url');
   const [data, setData] = useState<any>({ url: 'https://iloveqrcode.com' });
   const [style, setStyle] = useState<QRStyleSettings>(defaultStyle);
-  const [logo, setLogo] = useState<string | null>('https://iloveqrco.de/logo.png');
+  const [logo, setLogo] = useState<string | null>(null);
   const [title, setTitle] = useState('My Awesome QR');
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
 
-  const qrContent = generateQRContent(type, data);
+  const qrContent = useMemo(() => {
+    const content = generateQRContent(type, data);
+    return content || ' '; // Fallback to space to ensure something is generated
+  }, [type, data]);
 
-  const qrOptions = useMemo(() => ({
-    ...style,
-    data: qrContent,
-    image: logo || undefined,
-  }), [style, qrContent, logo]);
+  const qrOptions = useMemo(() => {
+    // Only pass properties supported by qr-code-styling
+    return {
+      width: 300, // Use smaller size for preview
+      height: 300,
+      margin: style.margin,
+      qrOptions: style.qrOptions,
+      imageOptions: style.imageOptions,
+      dotsOptions: style.dotsOptions,
+      backgroundOptions: style.backgroundOptions,
+      cornersSquareOptions: style.cornersSquareOptions,
+      cornersDotOptions: style.cornersDotOptions,
+      data: qrContent,
+      image: logo || undefined,
+    };
+  }, [style, qrContent, logo]);
 
   const handleDownload = (format: any) => {
-    downloadQR(qrOptions as any, format, style);
+    const downloadOptions = {
+      ...style,
+      data: qrContent,
+      image: logo || undefined,
+    };
+    downloadQR(downloadOptions as any, format, style);
   };
 
   const shareLinks = {

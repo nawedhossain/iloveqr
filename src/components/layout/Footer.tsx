@@ -6,11 +6,13 @@ export const Footer = () => {
     <footer className="mt-20 border-t border-brand-100/20 glass rounded-t-[3rem]">
       <div className="container mx-auto px-8 py-20">
         <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-          <div className="max-w-md text-center md:text-left">
-            <Link to="/" className="flex items-center justify-center md:justify-start gap-2 mb-8 group">
-              <img src="https://iloveqrco.de/logo.png" alt="I Love QR Code" className="h-12 w-auto group-hover:scale-110 transition-transform" />
+          <div className="shrink-0">
+            <Link to="/" className="flex items-center justify-center md:justify-start group">
+              <img src="https://iloveqrco.de/logo.png" alt="I Love QR Code" className="h-14 w-auto group-hover:scale-110 transition-transform" />
             </Link>
-            <p className="text-lg text-muted-foreground mb-8 font-medium leading-relaxed">
+          </div>
+          <div className="max-w-md text-center md:text-right">
+            <p className="text-lg text-muted-foreground font-medium leading-relaxed">
               Elevating the world of scannable assets. Beautiful, dynamic, and forever customizable QR codes for the modern web.
             </p>
           </div>
