@@ -18,12 +18,7 @@ export const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="bg-brand-600 p-1.5 rounded-xl shadow-lg shadow-brand-600/20 group-hover:scale-110 transition-transform">
-                <QrCode className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-xl font-black font-display tracking-tight text-foreground">
-                I Love <span className="text-gradient">QR Code</span>
-              </span>
+              <img src="https://iloveqrco.de/logo.png" alt="I Love QR Code" className="h-10 w-auto group-hover:scale-110 transition-transform" />
             </Link>
           </div>
 

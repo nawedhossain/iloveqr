@@ -22,7 +22,7 @@ export const GeneratorPage = () => {
   const [type, setType] = useState<QRType>('url');
   const [data, setData] = useState<any>({ url: 'https://iloveqrcode.com' });
   const [style, setStyle] = useState<QRStyleSettings>(defaultStyle);
-  const [logo, setLogo] = useState<string | null>(null);
+  const [logo, setLogo] = useState<string | null>('https://iloveqrco.de/logo.png');
   const [title, setTitle] = useState('My Awesome QR');
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);

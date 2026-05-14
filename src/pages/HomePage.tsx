@@ -110,8 +110,8 @@ export const HomePage = () => {
                         <div className="absolute -inset-4 bg-white rounded-[40px] blur-2xl opacity-50" />
                         <div className="relative bg-white p-8 rounded-[40px] shadow-2xl border border-brand-100">
                            <QrCode className="h-48 w-48 text-brand-600" />
-                           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl shadow-xl border-4 border-white">
-                              <Heart className="h-10 w-10 text-brand-600 fill-brand-600" />
+                           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded-2xl shadow-xl border-4 border-white">
+                              <img src="https://iloveqrco.de/logo.png" alt="Logo" className="h-10 w-10 object-contain" />
                            </div>
                         </div>
                      </div>

@@ -127,9 +127,6 @@ export const StyleConfig = ({ settings, currentLogo, onChange, onLogoUpload }: S
               { id: 'square', label: 'Square' },
               { id: 'extra-rounded', label: 'Rounded' },
               { id: 'dot', label: 'Circle' },
-              { id: 'classy', label: 'Shield' },
-              { id: 'classy-rounded', label: 'Diamond' },
-              { id: 'rounded', label: 'Blob' },
             ].map((type) => (
               <button
                 key={type.id}
