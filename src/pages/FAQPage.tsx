@@ -5,6 +5,7 @@ import { Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
+import { SEO } from '../components/layout/SEO';
 
 const faqs = [
   {
@@ -34,6 +35,11 @@ export const FAQPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="FAQ | I Love QR Code Support"
+        description="Common questions about our QR generator, customization options, export formats, and technical support."
+        canonical="https://iloveqrco.de/faq"
+      />
       <Navbar />
       <main className="container mx-auto px-4 py-20 max-w-4xl relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_top,rgba(239,68,68,0.05),transparent_60%)] pointer-events-none -z-10" />

@@ -34,7 +34,7 @@ interface TypeSelectorProps {
   onChange: (type: QRType) => void;
 }
 
-export const TypeSelector = ({ selected, onChange }: TypeSelectorProps) => {
+export const TypeSelector = React.memo(({ selected, onChange }: TypeSelectorProps) => {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
       {types.map((type) => {
@@ -58,4 +58,4 @@ export const TypeSelector = ({ selected, onChange }: TypeSelectorProps) => {
       })}
     </div>
   );
-};
+});

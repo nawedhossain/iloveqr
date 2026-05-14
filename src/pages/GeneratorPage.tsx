@@ -1,7 +1,9 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { TypeSelector } from '../components/qr/TypeSelector';
+import { SEO } from '../components/layout/SEO';
 import { TypeForm } from '../components/qr/TypeForm';
 import { StyleConfig } from '../components/qr/StyleConfig';
 import { QRPreview, downloadQR } from '../components/qr/QRPreview';
@@ -19,7 +21,37 @@ const XIcon = ({ className, style }: { className?: string; style?: React.CSSProp
 );
 
 export const GeneratorPage = () => {
-  const [type, setType] = useState<QRType>('url');
+  const { type: urlType } = useParams<{ type: string }>();
+  const navigate = useNavigate();
+  
+  const [type, setType] = useState<QRType>((urlType as QRType) || 'url');
+
+  // Handle initial redirect and URL validation
+  useEffect(() => {
+    const validTypes: string[] = ['url', 'vcard', 'wifi', 'email', 'sms', 'whatsapp', 'upi', 'call', 'pdf'];
+    
+    if (!urlType) {
+      navigate('/generator/url', { replace: true });
+      return;
+    }
+
+    if (urlType && urlType !== type) {
+      if (validTypes.includes(urlType)) {
+        setType(urlType as QRType);
+      } else {
+        // Fallback for invalid type
+        navigate('/generator/url', { replace: true });
+      }
+    }
+  }, [urlType, type, navigate]);
+
+  const handleTypeChange = (newType: QRType) => {
+    if (newType !== type) {
+      setType(newType);
+      navigate(`/generator/${newType}`);
+    }
+  };
+
   const [data, setData] = useState<any>({ url: 'https://iloveqrcode.com' });
   const [style, setStyle] = useState<QRStyleSettings>(defaultStyle);
   const [logo, setLogo] = useState<string | null>(null);
@@ -87,6 +119,11 @@ export const GeneratorPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`Custom ${type.toUpperCase()} QR Generator | I Love QR Code`}
+        description={`Design a beautiful ${type.toUpperCase()} QR code with custom colors, logos, and frames. Free high-resolution downloads in PNG, SVG, and PDF.`}
+        canonical={`https://iloveqrco.de/generator/${type}`}
+      />
       <Navbar />
       
       <main className="container mx-auto px-4 py-12">
@@ -116,7 +153,7 @@ export const GeneratorPage = () => {
               {/* Step 1: Type Selection */}
               <section>
                 <div className="glass-card p-6 rounded-[2rem] border-brand-100/30 shadow-xl bg-white/50">
-                  <TypeSelector selected={type} onChange={setType} />
+                  <TypeSelector selected={type} onChange={handleTypeChange} />
                 </div>
               </section>
 
@@ -160,7 +197,7 @@ export const GeneratorPage = () => {
                 
                 <div className="p-10 flex flex-col items-center justify-center bg-brand-50/10 border-b border-brand-100/10">
                     <motion.div
-                      key={qrContent + JSON.stringify(style.frameOptions)}
+                      layout
                       initial={{ scale: 0.9, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ type: 'spring', damping: 15 }}

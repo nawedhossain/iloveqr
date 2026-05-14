@@ -8,7 +8,7 @@ interface TypeFormProps {
   onChange: (data: any) => void;
 }
 
-export const TypeForm = ({ type, data, onChange }: TypeFormProps) => {
+export const TypeForm = React.memo(({ type, data, onChange }: TypeFormProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     onChange({ ...data, [e.target.name]: e.target.value });
   };
@@ -154,4 +154,4 @@ export const TypeForm = ({ type, data, onChange }: TypeFormProps) => {
     default:
       return null;
   }
-};
+});

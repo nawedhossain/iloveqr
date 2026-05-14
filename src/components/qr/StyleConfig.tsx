@@ -36,7 +36,7 @@ interface StyleConfigProps {
   onLogoUpload: (logo: string | null) => void;
 }
 
-export const StyleConfig = ({ settings, currentLogo, onChange, onLogoUpload }: StyleConfigProps) => {
+export const StyleConfig = React.memo(({ settings, currentLogo, onChange, onLogoUpload }: StyleConfigProps) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const updateSettings = (updates: Record<string, any>) => {
     const newSettings = JSON.parse(JSON.stringify(settings));
@@ -381,4 +381,4 @@ export const StyleConfig = ({ settings, currentLogo, onChange, onLogoUpload }: S
       </div>
     </div>
   );
-};
+});

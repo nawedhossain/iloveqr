@@ -12,18 +12,17 @@ interface QRPreviewProps {
 
 export const QRPreview = ({ options, settings, className }: QRPreviewProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const qrCode = useRef<QRCodeStyling | null>(null);
 
   useEffect(() => {
     if (!ref.current) return;
 
-    // Direct recreation is more robust for container switching and reactive updates
-    const qr = new QRCodeStyling(options);
-    ref.current.innerHTML = '';
-    qr.append(ref.current);
-
-    return () => {
-      if (ref.current) ref.current.innerHTML = '';
-    };
+    if (!qrCode.current) {
+      qrCode.current = new QRCodeStyling(options);
+      qrCode.current.append(ref.current);
+    } else {
+      qrCode.current.update(options);
+    }
   }, [options]);
 
   const frame = settings?.frameOptions;

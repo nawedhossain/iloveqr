@@ -3,6 +3,7 @@ import { Footer } from '../components/layout/Footer';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { Link } from 'react-router-dom';
+import { SEO } from '../components/layout/SEO';
 import { 
   QrCode, 
   Palette, 
@@ -21,6 +22,10 @@ import { motion } from 'motion/react';
 export const HomePage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="I Love QR Code | Professional Stylish QR Generator"
+        description="The ultimate QR code designer. Create professional, branded QR codes with custom logos, patterns, and high-resolution exports."
+      />
       <Navbar />
       
       {/* Hero Section */}
