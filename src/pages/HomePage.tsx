@@ -47,7 +47,7 @@ export const HomePage = () => {
               transition={{ delay: 0.1 }}
               className="text-6xl md:text-8xl font-black font-display tracking-tight text-foreground mb-10 leading-[0.95]"
             >
-              Codes that <br />
+              QR Codes that <br />
               <span className="text-gradient">People Love</span>
             </motion.h1>
             
@@ -89,7 +89,7 @@ export const HomePage = () => {
                     <div className="h-3 w-3 rounded-full bg-green-400" />
                   </div>
                   <div className="mx-auto bg-background rounded-md px-4 py-0.5 text-[10px] text-muted-foreground border">
-                    iloveqrcode.com/generator
+                    iloveqrco.de/generator
                   </div>
                </div>
                <div className="grid grid-cols-1 md:grid-cols-2 items-center">
@@ -116,7 +116,7 @@ export const HomePage = () => {
                         <div className="relative bg-white p-8 rounded-[40px] shadow-2xl border border-brand-100">
                            <QrCode className="h-48 w-48 text-brand-600" />
                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded-2xl shadow-xl border-4 border-white">
-                              <img src="/logo.png" alt="Logo" className="h-10 w-10 object-contain" />
+                              <img src="/favicon.png" alt="Favicon" className="h-10 w-10 object-contain" />
                            </div>
                         </div>
                      </div>

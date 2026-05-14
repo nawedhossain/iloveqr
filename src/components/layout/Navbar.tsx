@@ -18,7 +18,7 @@ export const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2 group">
-              <img src="/logo.png" alt="I Love QR Code" className="h-10 w-auto group-hover:scale-110 transition-transform" />
+              <img src="/logo.png" alt="I Love QR Code" className="h-6 w-auto group-hover:scale-110 transition-transform" />
             </Link>
           </div>
 

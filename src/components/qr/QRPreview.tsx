@@ -1,6 +1,18 @@
 import { useEffect, useRef } from 'react';
-import QRCodeStyling, { Options } from 'qr-code-styling';
+import _QRCodeStyling, { Options } from 'qr-code-styling';
 import { QRStyleSettings } from '../../types/qr';
+
+// Use a more resilient way to handle the class import
+const getQRCodeStyling = () => {
+  if (typeof window === 'undefined') return null;
+  // Some versions of the library export the class directly, others use .default
+  let Lib: any = _QRCodeStyling;
+  if (Lib && typeof Lib !== 'function' && Lib.default) {
+    Lib = Lib.default;
+  }
+  return Lib;
+};
+
 import { cn } from '../../lib/utils';
 import { toPng, toJpeg, toSvg } from 'html-to-image';
 
@@ -12,16 +24,31 @@ interface QRPreviewProps {
 
 export const QRPreview = ({ options, settings, className }: QRPreviewProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const qrCode = useRef<QRCodeStyling | null>(null);
+  const qrCode = useRef<any>(null);
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current || typeof window === 'undefined') return;
 
-    if (!qrCode.current) {
-      qrCode.current = new QRCodeStyling(options);
-      qrCode.current.append(ref.current);
-    } else {
-      qrCode.current.update(options);
+    const QRCodeStyling = getQRCodeStyling();
+    if (!QRCodeStyling) return;
+
+    try {
+      if (!qrCode.current) {
+        qrCode.current = new QRCodeStyling(options);
+        qrCode.current.append(ref.current);
+      } else {
+        qrCode.current.update(options);
+      }
+    } catch (err) {
+      console.error('QR Render Error:', err);
+      // Fallback: clear and restart
+      if (ref.current) ref.current.innerHTML = '';
+      try {
+        qrCode.current = new QRCodeStyling(options);
+        qrCode.current.append(ref.current);
+      } catch (innerErr) {
+        console.error('QR Fatal Render Error:', innerErr);
+      }
     }
   }, [options]);
 
@@ -39,10 +66,10 @@ export const QRPreview = ({ options, settings, className }: QRPreviewProps) => {
           style={{ backgroundColor: frame.backgroundColor }}
         >
           <div 
-             className={cn(
-               "bg-white p-4 rounded-2xl shadow-lg flex items-center justify-center",
-               frame.type === 'bubble' ? 'rounded-full' : ''
-             )}
+            className={cn(
+              "bg-white p-4 rounded-2xl shadow-lg flex items-center justify-center",
+              frame.type === 'bubble' ? 'rounded-full' : ''
+            )}
           >
             <div ref={ref} className="overflow-hidden flex items-center justify-center" />
           </div>
@@ -70,6 +97,9 @@ export const downloadQR = async (
   format: 'png' | 'svg' | 'jpeg' | 'webp' | 'pdf',
   settings?: QRStyleSettings
 ) => {
+  const QRCodeStyling = getQRCodeStyling();
+  if (!QRCodeStyling) return;
+
   const isFramed = settings?.frameOptions?.enabled;
   
   if (isFramed) {
@@ -97,10 +127,11 @@ export const downloadQR = async (
         else if (format === 'svg') dataUrl = await toSvg(node, exportOptions);
         else if (format === 'pdf') {
           const imgData = await toPng(node, exportOptions);
+          if (!imgData) throw new Error('Failed to generate image for PDF');
           const { jsPDF } = await import('jspdf');
           const doc = new jsPDF();
           doc.addImage(imgData, 'PNG', 10, 10, 60, 80);
-          doc.save('qrcode-framed.pdf');
+          doc.save(`qrcode-${Date.now()}.pdf`);
           return;
         }
         
@@ -119,13 +150,23 @@ export const downloadQR = async (
 
   const qrCode = new QRCodeStyling(options);
   if (format === 'pdf') {
-      const { jsPDF } = await import('jspdf');
-      const doc = new jsPDF();
-      const rawData = await qrCode.getRawData('png');
-      if (rawData) {
-        const url = URL.createObjectURL(rawData);
-        doc.addImage(url, 'PNG', 10, 10, 50, 50);
-        doc.save('qrcode.pdf');
+      try {
+        const { jsPDF } = await import('jspdf');
+        const doc = new jsPDF();
+        const rawData = await qrCode.getRawData('png');
+        if (rawData) {
+          const url = URL.createObjectURL(rawData);
+          doc.addImage(url, 'PNG', 10, 10, 50, 50);
+          doc.save(`qrcode-${Date.now()}.pdf`);
+          URL.revokeObjectURL(url);
+        } else {
+          // Fallback to basic download if rawData fails
+          await qrCode.download({ name: 'qrcode', extension: 'png' });
+        }
+      } catch (err) {
+        console.error('PDF export failed:', err);
+        // Fallback
+        await qrCode.download({ name: 'qrcode', extension: 'png' });
       }
       return;
   }

@@ -6,18 +6,30 @@ export const generateQRContent = (type: QRType, data: any): string => {
       return data.url || '';
     case 'upi':
       if (!data.vpa) return '';
-      const upiUrl = new URL(`upi://pay`);
-      upiUrl.searchParams.set('pa', data.vpa);
-      if (data.name) upiUrl.searchParams.set('pn', data.name);
-      if (data.mc) upiUrl.searchParams.set('mc', data.mc);
-      if (data.tid) upiUrl.searchParams.set('tid', data.tid);
-      if (data.tr) upiUrl.searchParams.set('tr', data.tr);
-      if (data.tn) upiUrl.searchParams.set('tn', data.tn);
-      if (data.am) {
-        upiUrl.searchParams.set('am', data.am);
-        upiUrl.searchParams.set('cu', 'INR');
+      try {
+        const upiUrl = new URL(`upi://pay`);
+        upiUrl.searchParams.set('pa', data.vpa);
+        if (data.name) upiUrl.searchParams.set('pn', data.name);
+        if (data.mc) upiUrl.searchParams.set('mc', data.mc);
+        if (data.tid) upiUrl.searchParams.set('tid', data.tid);
+        if (data.tr) upiUrl.searchParams.set('tr', data.tr);
+        if (data.tn) upiUrl.searchParams.set('tn', data.tn);
+        if (data.am) {
+          upiUrl.searchParams.set('am', data.am);
+          upiUrl.searchParams.set('cu', 'INR');
+        }
+        return upiUrl.toString();
+      } catch (err) {
+        // Fallback to manual string building if URL constructor fails for custom protocol
+        let params = `pa=${encodeURIComponent(data.vpa)}`;
+        if (data.name) params += `&pn=${encodeURIComponent(data.name)}`;
+        if (data.mc) params += `&mc=${encodeURIComponent(data.mc)}`;
+        if (data.tid) params += `&tid=${encodeURIComponent(data.tid)}`;
+        if (data.tr) params += `&tr=${encodeURIComponent(data.tr)}`;
+        if (data.tn) params += `&tn=${encodeURIComponent(data.tn)}`;
+        if (data.am) params += `&am=${encodeURIComponent(data.am)}&cu=INR`;
+        return `upi://pay?${params}`;
       }
-      return upiUrl.toString();
     case 'wifi':
       return `WIFI:S:${data.ssid};T:${data.encryption};P:${data.password};H:${data.hidden ? 'true' : 'false'};;`;
     case 'whatsapp':
