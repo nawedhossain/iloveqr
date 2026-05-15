@@ -67,8 +67,8 @@ export const GeneratorPage = () => {
   const qrOptions = useMemo(() => {
     // Only pass properties supported by qr-code-styling
     return {
-      width: 300, // Use smaller size for preview
-      height: 300,
+      width: 250, // Slightly smaller for preview to accommodate frames
+      height: 250,
       margin: style.margin,
       qrOptions: style.qrOptions,
       imageOptions: style.imageOptions,

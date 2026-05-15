@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   QrCode, 
   Ban, 
@@ -38,6 +38,7 @@ interface StyleConfigProps {
 
 export const StyleConfig = React.memo(({ settings, currentLogo, onChange, onLogoUpload }: StyleConfigProps) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
+
   const updateSettings = (updates: Record<string, any>) => {
     const newSettings = JSON.parse(JSON.stringify(settings));
     
@@ -163,13 +164,16 @@ export const StyleConfig = React.memo(({ settings, currentLogo, onChange, onLogo
               ))}
             </div>
             <div className="relative inline-block">
-               <Button variant="outline" className="h-12 px-6 gap-2 rounded-xl font-bold border-brand-100 shadow-sm hover:bg-brand-50">
+               <Button 
+                 variant="outline" 
+                 className="h-12 px-6 gap-2 rounded-xl font-bold border-brand-100 shadow-sm hover:bg-brand-50"
+               >
                   <Palette className="h-4 w-4" />
                   Add a colour
                </Button>
                <input 
                 type="color" 
-                className="absolute inset-0 opacity-0 cursor-pointer"
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
                 value={settings.dotsOptions.color}
                 onChange={(e) => {
                   updateSettings({
@@ -198,13 +202,16 @@ export const StyleConfig = React.memo(({ settings, currentLogo, onChange, onLogo
               ))}
             </div>
             <div className="relative inline-block">
-               <Button variant="outline" className="h-12 px-6 gap-2 rounded-xl font-bold border-brand-100 shadow-sm hover:bg-brand-50">
+               <Button 
+                variant="outline" 
+                className="h-12 px-6 gap-2 rounded-xl font-bold border-brand-100 shadow-sm hover:bg-brand-50"
+               >
                   <Palette className="h-4 w-4" />
                   Add a colour
                </Button>
                <input 
                 type="color" 
-                className="absolute inset-0 opacity-0 cursor-pointer"
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
                 value={settings.backgroundOptions.color}
                 onChange={(e) => updateSettings({ 'backgroundOptions.color': e.target.value })}
                />

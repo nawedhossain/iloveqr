@@ -33,15 +33,21 @@ export const QRPreview = ({ options, settings, className }: QRPreviewProps) => {
     if (!QRCodeStyling) return;
 
     try {
+      // Clear previous content if ref just mounted or frame mode changed
+      const currentRef = ref.current;
+      
       if (!qrCode.current) {
         qrCode.current = new QRCodeStyling(options);
-        qrCode.current.append(ref.current);
+        qrCode.current.append(currentRef);
       } else {
+        // If the ref container has changed (e.g. frame enabled/disabled), we might need to re-append
+        if (currentRef.innerHTML === '') {
+           qrCode.current.append(currentRef);
+        }
         qrCode.current.update(options);
       }
     } catch (err) {
       console.error('QR Render Error:', err);
-      // Fallback: clear and restart
       if (ref.current) ref.current.innerHTML = '';
       try {
         qrCode.current = new QRCodeStyling(options);
@@ -50,7 +56,7 @@ export const QRPreview = ({ options, settings, className }: QRPreviewProps) => {
         console.error('QR Fatal Render Error:', innerErr);
       }
     }
-  }, [options]);
+  }, [options, settings?.frameOptions?.enabled]);
 
   const frame = settings?.frameOptions;
 
